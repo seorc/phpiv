@@ -1,7 +1,7 @@
 <?php
 
 spl_autoload_register(function($class) {
-	$file = __DIR__.'/mpiv/'.$class.'.php';
+	$file = __DIR__.'/phpiv/'.$class.'.php';
 	if(file_exists($file)) {
 		require_once $file;
 	}
