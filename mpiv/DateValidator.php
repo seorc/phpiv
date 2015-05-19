@@ -6,9 +6,12 @@ class DateValidator extends Validator {
 
 	/**
 	 * Validate the format of the date.
+	 *
+	 * This method is chainable.
 	 */
 	public function format(array $format) {
 		$this->v['format'] = $format;
+		return $this;
 	}
 
 	/**
@@ -19,7 +22,7 @@ class DateValidator extends Validator {
 	 */
 	public function formatCheck(array $data) {
 		$val = $this->value;
-		if($val && is_null($this->clean())) {
+		if(!$this->isEmpty && is_null($this->cleanedValue)) {
 			return 'El formato es incorrecto';
 		}
 	}
@@ -29,6 +32,8 @@ class DateValidator extends Validator {
 	 *
 	 * $date must be written in ISO format or a DateTime instance must be 
 	 * passed.
+	 *
+	 * This method is chainable.
 	 */
 	public function min($date) {
 		if(!is_a($date, 'DateTime')) {
@@ -46,6 +51,13 @@ class DateValidator extends Validator {
 		return $this;
 	}
 
+	/**
+	 * Validate maximum date.
+	 * $date must be written in ISO format or a DateTime instance must be 
+	 * passed.
+	 *
+	 * This method is chainable.
+	 */
 	public function max($date) {
 		if(!is_a($date, 'DateTime')) {
 			$date = DateTime::createFromFormat('Y-m-d', $date);
@@ -64,13 +76,15 @@ class DateValidator extends Validator {
 
 	/**
 	 * Convenience method to define min and max boundaries in a signle call.
+	 *
+	 * This method is chainable.
 	 */
 	public function between($min, $max) {
 		return $this->min($min)->max($max);
 	}
 
 	public function minCheck(array $data) {
-		if($this->value && $this->clean()) {
+		if($this->value && $this->cleanedValue) {
 			if($this->cleanedValue < $this->v['min']) {
 				return sprintf("No debe ser anterior a %s",
 					$this->v['min']->format($this->formatUsed));
@@ -79,7 +93,7 @@ class DateValidator extends Validator {
 	}
 
 	public function maxCheck(array $data) {
-		if($this->value && $this->clean()) {
+		if($this->value && $this->cleanedValue) {
 			if($this->cleanedValue > $this->v['max']) {
 				return sprintf("No debe ser posterior a %s",
 					$this->v['max']->format($this->formatUsed));
@@ -88,10 +102,7 @@ class DateValidator extends Validator {
 	}
 
 	protected function clean() {
-		if(!is_null($this->cleanedValue)) {
-			return $this->cleanedValue;
-		}
-		if(in_array('format', $this->v)) {
+		if(array_key_exists('format', $this->v)) {
 			$format = $this->v['format'];
 		}
 		else {
@@ -101,7 +112,7 @@ class DateValidator extends Validator {
 			$parsed = DateTime::createFromFormat($fmt, $this->value);
 			if($parsed) {
 				$this->formatUsed = $fmt;
-				return $this->cleanedValue = $parsed;
+				return $parsed;
 			}
 		}
 		return null;

@@ -5,9 +5,11 @@ class Validator {
 	protected $v;
 	public $name;
 	public $codename;
-	protected $value;
-	protected $isEmpty; // Implies null or blank.
-	protected $cleanedValue = null;
+	public $isNull; // ture when the field is null;
+	public $isBlank; // true when the field is blank;
+	public $isEmpty; // Implies null or blank.
+	public $value;
+	public $cleanedValue = null;
 
 	public function __construct($codename, $name='') {
 		$this->name = $name ? $name : $codename;
@@ -80,7 +82,10 @@ class Validator {
 	 */
 	public function check(array $data) {
 		$this->value = $this->arrGet($this->codename, $data);
-		$this->isEmpty = is_null($this->value) || strlen($this->value) > 0;
+		$this->isNull = is_null($this->value);
+		$this->isBlank = !$this->isNull && strlen($this->value) === 0;
+		$this->isEmpty = $this->isNull || $this->isBlank;
+		$this->cleanedValue = $this->clean();
 		$errors = $this->baseCheck();
 		foreach($this->v as $k => $v) {
 			$method = $k."Check";
@@ -101,6 +106,10 @@ class Validator {
 			return $arr[$key];
 		}
 		return $default;
+	}
+
+	protected function clean() {
+		return $this->value;
 	}
 }
 
