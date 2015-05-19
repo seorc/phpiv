@@ -1,7 +1,5 @@
 <?php
 
-require_once 'autoload.php';
-
 class NumberValidator extends Validator {
 	public function baseCheck() {
 		$errors = array();

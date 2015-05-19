@@ -1,7 +1,5 @@
 <?php
 
-require_once 'autoload.php';
-
 class DateValidator extends Validator {
 
 	protected $formatUsed;

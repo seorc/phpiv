@@ -1,7 +1,5 @@
 <?php
 
-require_once 'autoload.php';
-
 class ValidatorSet {
 	protected $validators = array();
 	protected $types = array(
