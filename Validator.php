@@ -1,6 +1,6 @@
 <?php
 
-require_once 'ValidationError.php';
+require_once 'autoload.php';
 
 class Validator {
 
@@ -8,7 +8,7 @@ class Validator {
 	public $name;
 	public $codename;
 	protected $value;
-	protected $isEmpty;
+	protected $isEmpty; // Implies null or blank.
 	protected $cleanedValue = null;
 
 	public function __construct($codename, $name='') {

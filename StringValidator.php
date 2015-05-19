@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Validator.php';
+require_once 'autoload.php';
 
 /**
  * Validator of dates.

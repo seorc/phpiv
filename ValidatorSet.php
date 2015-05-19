@@ -1,9 +1,6 @@
 <?php
 
-require_once 'StringValidator.php';
-require_once 'DateValidator.php';
-require_once 'EmailValidator.php';
-require_once 'NumberValidator.php';
+require_once 'autoload.php';
 
 class ValidatorSet {
 	protected $validators = array();
