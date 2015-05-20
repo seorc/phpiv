@@ -9,6 +9,7 @@ class ValidatorSet {
 		'date' => 'DateValidator',
 		'email' => 'EmailValidator',
 		'number' => 'NumberValidator',
+		'bool' => 'BooleanValidator',
 	);
 
 	/**
