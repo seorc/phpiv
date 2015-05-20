@@ -50,7 +50,7 @@ class DateValidatorTest extends PHPUnit_Framework_TestCase {
 		try {
 			$v->check(array('date' => $date));
 			// The cleaned value must be a DateTime instance.
-			$this->assertEquals('DateTime', get_class($v->cleanedValue));
+			$this->assertInstanceOf('DateTime', $v->cleanedValue);
 			$this->assertTrue($valid);
 		}
 		catch(ValidationError $e) {
