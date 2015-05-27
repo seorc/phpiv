@@ -8,6 +8,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($v->required(), $v);
 		$this->assertEquals($v->match('/.*/'), $v);
 		$this->assertEquals($v->with('afunc'), $v);
+		$this->assertEquals($v->apply('afunc', array(':input')), $v);
 	}
 
 	public function testIsEmptyWhenNullOrBlank() {
@@ -34,6 +35,28 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($v->isBlank);
 	}
 
+	public function testApplyCallIsWorking() {
+		$v = new Validator('afield');
+		$v->apply('mb_strtoupper', array(':input', 'UTF-8'));
+		$v->check(array('afield' => 'ifñoass9áááñslfjm+´âà~aáäA'));
+		$this->assertEquals('IFÑOASS9ÁÁÁÑSLFJM+´ÂÀ~AÁÄA', $v->cleanedValue);
+	}
+
+	public function testMultipleApplyIsWorking() {
+		$v = new Validator('afield');
+		$v->apply('mb_strtoupper', array(':input', 'UTF-8'));
+		$v->apply('rtrim');
+		$v->check(array('afield' => ' josijf oooO  '));
+		$this->assertEquals(' JOSIJF OOOO', $v->cleanedValue);
+	}
+
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testApplayThrowsExceptionOnUnexistentFunction() {
+		$v = new Validator('afield');
+		$v->apply('thisfunctshouldnotexistttt', array());
+	}
 }
 
 ?>

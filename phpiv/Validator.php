@@ -3,6 +3,7 @@
 class Validator {
 
 	protected $v;
+	protected $apply;
 	public $name;
 	public $codename;
 	public $isNull; // ture when the field is null;
@@ -15,6 +16,7 @@ class Validator {
 		$this->name = $name ? $name : $codename;
 		$this->codename = $codename;
 		$this->v = array();
+		$this->apply = array();
 	}
 
 	public function required($req = true) {
@@ -86,6 +88,7 @@ class Validator {
 		$this->isBlank = !$this->isNull && strlen($this->value) === 0;
 		$this->isEmpty = $this->isNull || $this->isBlank;
 		$this->cleanedValue = $this->clean();
+		$this->applyApply();
 		$errors = $this->baseCheck();
 		foreach($this->v as $k => $v) {
 			$method = $k."Check";
@@ -111,6 +114,57 @@ class Validator {
 	protected function clean() {
 		return $this->value;
 	}
+
+	/**
+	 * Applay a function on the input.
+	 *
+	 * You can apply many functions to the validator and they will be executed 
+	 * in the order you pass them to it. This method is called once the 
+	 * validator has cleanedValue set.
+	 *
+	 * This method is chainable.
+	 *
+	 * @param string $function The function name to call. This function's 
+	 * return value will overrwrite the value of $this->cleanedValue.
+	 * @param array $args The arguments to call the function with. The special
+	 * ':input' argument can be included in this array to tell this validator
+	 * where to position the input it is validatin in the function call.
+	 * Otherwise it will pass the input value as the first argument to the
+	 * function.
+	 */
+	public function apply($function, array $args=null) {
+		if(!function_exists($function)) {
+			throw new InvalidArgumentException('You must pass an existing function name');
+		}
+		if(is_null($args)) {
+			$args = array();
+		}
+		$this->apply[] = array(
+			'f' => $function,
+			'args' => $args,
+		);
+		return $this;
+	}
+
+	/**
+	 * Call the set of functions to be applied on $this->cleanedValue.
+	 */
+	protected function applyApply() {
+		foreach($this->apply as $a) {
+			$args = $a['args'];
+			$input_pos = array_search(':input', $args);
+			if($input_pos === false) {
+				array_unshift($args, $this->cleanedValue);
+			}
+			else {
+				$argat = array($input_pos => $this->cleanedValue);
+				$args = array_replace($args, $argat);
+			}
+
+			$this->cleanedValue = call_user_func_array($a['f'], $args);
+		}
+	}
+
 }
 
 ?>
