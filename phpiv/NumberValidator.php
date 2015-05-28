@@ -8,6 +8,10 @@ class NumberValidator extends Validator {
 		}
 		return $errors;
 	}
+
+	protected function clean() {
+		return (int) $this->value;
+	}
 }
 
 ?>
