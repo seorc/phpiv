@@ -9,6 +9,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($v->match('/.*/'), $v);
 		$this->assertEquals($v->with('afunc'), $v);
 		$this->assertEquals($v->apply('afunc', array(':input')), $v);
+		$this->assertEquals($v->defaultInput(3), $v);
 	}
 
 	public function testIsEmptyWhenNullOrBlank() {
@@ -56,6 +57,15 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 	public function testApplayThrowsExceptionOnUnexistentFunction() {
 		$v = new Validator('afield');
 		$v->apply('thisfunctshouldnotexistttt', array());
+	}
+
+	public function testDefaultInputIsBeingUsed() {
+		$v = new Validator('in');
+		$v->defaultInput(6);
+		$v->check(array('in' => 10));
+		$this->assertEquals(10, $v->cleanedValue);
+		$v->check(array());
+		$this->assertEquals(6, $v->cleanedValue);
 	}
 }
 

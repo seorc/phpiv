@@ -4,6 +4,7 @@ class Validator {
 
 	protected $v;
 	protected $apply;
+	protected $default = null;
 	public $name;
 	public $codename;
 	public $isNull; // ture when the field is null;
@@ -83,7 +84,7 @@ class Validator {
 	 * Run the validation set.
 	 */
 	public function check(array $data) {
-		$this->value = $this->arrGet($this->codename, $data);
+		$this->value = $this->arrGet($this->codename, $data, $this->default);
 		$this->isNull = is_null($this->value);
 		$this->isBlank = !$this->isNull && strlen($this->value) === 0;
 		$this->isEmpty = $this->isNull || $this->isBlank;
@@ -163,6 +164,21 @@ class Validator {
 
 			$this->cleanedValue = call_user_func_array($a['f'], $args);
 		}
+	}
+
+	/**
+	 * Define a default input for this field.
+	 *
+	 * If the input parser detects that there isn't a value bound to the field
+	 * it will use this method's argument as value. This means the defaultInput
+	 * will be processed exactly as any other input to the field on validation
+	 * time.
+	 *
+	 * This method is chainable.
+	 */
+	public function defaultInput($value) {
+		$this->default = $value;	
+		return $this;
 	}
 
 }
