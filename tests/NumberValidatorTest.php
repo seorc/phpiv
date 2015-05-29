@@ -6,6 +6,7 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 		$v = new NumberValidator('numval');
 		$this->assertEquals($v->min(2), $v);
 		$this->assertEquals($v->max(3), $v);
+		$this->assertEquals($v->between(3, 4), $v);
 	}
 
 	public function testValueIsCleanedToNumber() {
@@ -89,6 +90,22 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 			$this->setExpectedException('InvalidArgumentException');
 		}
 		$v->max($max);
+	}
+
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testMaxCannotBeLessThanMin() {
+		$v = new NumberValidator('val');
+		$v->min(4)->max(3);
+	}
+
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testMinCannotBeGreaterThanMax() {
+		$v = new NumberValidator('val');
+		$v->max(4)->min(5);
 	}
 
 }
