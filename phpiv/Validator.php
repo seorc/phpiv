@@ -4,7 +4,8 @@ class Validator {
 
 	protected $v;
 	protected $apply;
-	protected $default = null;
+	protected $defaultInput = null;
+	protected $defaultUsed;
 	public $name;
 	public $codename;
 	public $isNull; // ture when the field is null;
@@ -20,6 +21,9 @@ class Validator {
 		$this->apply = array();
 	}
 
+	/**
+	 * Notice this filter has primacy over defaultInput().
+	 */
 	public function required($req = true) {
 		if(!is_bool($req)) {
 			throw new InvalidArgumentException('Must be boolean');
@@ -29,7 +33,7 @@ class Validator {
 	}
 
 	public function requiredCheck(array $data) {
-		if(is_null($this->value) || $data[$this->codename] === '') {
+		if($this->isEmpty || $this->defaultUsed) {
 			return sprintf('Es requerido', $this->name);
 		}
 	}
@@ -84,7 +88,7 @@ class Validator {
 	 * Run the validation set.
 	 */
 	public function check(array $data) {
-		$this->value = $this->arrGet($this->codename, $data, $this->default);
+		$this->value = $this->arrGet($this->codename, $data, $this->defaultInput);
 		$this->isNull = is_null($this->value);
 		$this->isBlank = !$this->isNull && strlen($this->value) === 0;
 		$this->isEmpty = $this->isNull || $this->isBlank;
@@ -107,8 +111,10 @@ class Validator {
 	public function arrGet($key, array $arr, $default=null) {
 		$ret = $default;
 		if(array_key_exists($key, $arr)) {
+			$this->defaultUsed = false;
 			return $arr[$key];
 		}
+		$this->defaultUsed = true;
 		return $default;
 	}
 
@@ -174,10 +180,13 @@ class Validator {
 	 * will be processed exactly as any other input to the field on validation
 	 * time.
 	 *
+	 * Notice that required will validate the required field even if you set a
+	 * defaultInput().
+	 *
 	 * This method is chainable.
 	 */
 	public function defaultInput($value) {
-		$this->default = $value;	
+		$this->defaultInput = $value;	
 		return $this;
 	}
 

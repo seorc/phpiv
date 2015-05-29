@@ -67,6 +67,42 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$v->check(array());
 		$this->assertEquals(6, $v->cleanedValue);
 	}
+
+	/**
+	 *  @expectedException ValidationError
+	 */
+	public function testRequiredDetectsUniexistingKeyOnInput() {
+		$v = new Validator('in');
+		$v->required();
+		$v->check(array());
+	}
+
+	/**
+	 * Bug exposing test.
+	 *
+	 * Exposes a bug when defaultInput() and required() are used together:
+	 * Validator tried to access an unexisting index in input data when both
+	 * filters where used, preventing this validator to perform a complete 
+	 * validation.
+	 *
+	 * @expectedException ValidationError
+	 */
+	public function testRequiredDoesNotColideWithDefaultInput() {
+		$v = new Validator('in');
+		$v->defaultInput(0)->required();
+		$v->check(array());
+	}
+
+	public function testRequiredApplyEvenIfDefaultInputIsSet() {
+		$v = new Validator('in');
+		$v->defaultInput(0);
+		$v->check(array());
+		$this->assertEquals(0, $v->cleanedValue);
+
+		$this->setExpectedException('ValidationError');
+		$v->required();
+		$v->check(array());
+	}
 }
 
 ?>
