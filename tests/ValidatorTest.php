@@ -133,7 +133,8 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		);
 		$v->check($input);
 		$this->assertThat($v->cleanedValue, $this->isType('array'));
-		$this->assertEquals(array('attrs' => 1213), $v->cleanedValue);
+		$this->assertThat(array('attrs' => '1213'),
+			$this->identicalTo($v->cleanedValue));
 	}
 }
 
