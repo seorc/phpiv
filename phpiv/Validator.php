@@ -90,7 +90,9 @@ class Validator {
 	public function check(array $data) {
 		$this->value = $this->arrGet($this->codename, $data, $this->defaultInput);
 		$this->isNull = is_null($this->value);
-		$this->isBlank = !$this->isNull && strlen($this->value) === 0;
+		$this->isBlank = !$this->isNull
+			&& !is_array($this->value)
+			&& strlen($this->value) === 0;
 		$this->isEmpty = $this->isNull || $this->isBlank;
 		$this->cleanedValue = $this->clean();
 		$this->applyApply();

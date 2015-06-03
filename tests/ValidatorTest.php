@@ -110,7 +110,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 			'element' => array(
 				'attrs' => array(
 					'text' => 'this text',
-				)
+				),
 			),
 		);
 		$v->check($input);
@@ -119,6 +119,22 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 			$v->cleanedValue);
 	}
 
+	/**
+	 * Exposes a bug when the input receives an array as value.
+	 * Validator::check() asumes a string as input. But it should support
+	 * arrays and handle them correctly.
+	 */
+	public function testCheckHandlesArrayValues() {
+		$v = new Validator('foo');
+		$input = array(
+			'foo' => array(
+				'attrs' => '1213',
+			),
+		);
+		$v->check($input);
+		$this->assertThat($v->cleanedValue, $this->isType('array'));
+		$this->assertEquals(array('attrs' => 1213), $v->cleanedValue);
+	}
 }
 
 ?>
