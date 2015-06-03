@@ -108,14 +108,25 @@ class Validator {
 		}
 	}
 
+	/**
+	 * Get the value (or $default if not present) associated to $key in $array.
+	 */
 	public function arrGet($key, array $arr, $default=null) {
-		$ret = $default;
-		if(array_key_exists($key, $arr)) {
-			$this->defaultUsed = false;
-			return $arr[$key];
+		$map = preg_split('/\./', $this->codename);
+
+		$depth = count($map);
+		for($i = 0; $i < $depth; $i++) {
+			$key = $map[$i];
+			if(!array_key_exists($key,	$arr)) {
+				$this->defaultUsed = true;
+				return $default;
+			}
+			// Get the subset of data at $key;
+			$arr = $arr[$key];
 		}
-		$this->defaultUsed = true;
-		return $default;
+		// If execution arrives to this point, it means $cursor actually has the
+		// value to be returned.
+		return $arr;
 	}
 
 	protected function clean() {
@@ -123,15 +134,15 @@ class Validator {
 	}
 
 	/**
-	 * Applay a function on the input.
+	 * Apply a function on the input.
 	 *
-	 * You can apply many functions to the validator and they will be executed 
-	 * in the order you pass them to it. This method is called once the 
+	 * You can apply many functions to the validator and they will be executed
+	 * in the order you pass them to it. This method is called once the
 	 * validator has cleanedValue set.
 	 *
 	 * This method is chainable.
 	 *
-	 * @param string $function The function name to call. This function's 
+	 * @param string $function The function name to call. This function's
 	 * return value will overrwrite the value of $this->cleanedValue.
 	 * @param array $args The arguments to call the function with. The special
 	 * ':input' argument can be included in this array to tell this validator
@@ -186,7 +197,7 @@ class Validator {
 	 * This method is chainable.
 	 */
 	public function defaultInput($value) {
-		$this->defaultInput = $value;	
+		$this->defaultInput = $value;
 		return $this;
 	}
 

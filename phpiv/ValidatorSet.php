@@ -38,6 +38,13 @@ class ValidatorSet {
 			'You must pas a validator class or its alias');
 	}
 
+	/**
+	 * Get a validator from this set.
+	 */
+	public function get($codename) {
+		return $this->validators[$codename];
+	}
+
 	public function check($data) {
 		$errors = array();
 		foreach($this->validators as $v) {

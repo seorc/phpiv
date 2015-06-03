@@ -82,7 +82,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 	 *
 	 * Exposes a bug when defaultInput() and required() are used together:
 	 * Validator tried to access an unexisting index in input data when both
-	 * filters where used, preventing this validator to perform a complete 
+	 * filters where used, preventing this validator to perform a complete
 	 * validation.
 	 *
 	 * @expectedException ValidationError
@@ -103,6 +103,22 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$v->required();
 		$v->check(array());
 	}
+
+	public function testDotNotationIsSubarrayTraversed() {
+		$v = new Validator('element.attrs.text');
+		$input = array(
+			'element' => array(
+				'attrs' => array(
+					'text' => 'this text',
+				)
+			),
+		);
+		$v->check($input);
+		$this->assertEquals(
+			$input['element']['attrs']['text'],
+			$v->cleanedValue);
+	}
+
 }
 
 ?>
