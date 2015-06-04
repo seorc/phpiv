@@ -10,6 +10,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($v->with('afunc'), $v);
 		$this->assertEquals($v->apply('afunc', array(':input')), $v);
 		$this->assertEquals($v->defaultInput(3), $v);
+		$this->assertEquals($v->nmspace('foo.bar'), $v);
 	}
 
 	public function testIsEmptyWhenNullOrBlank() {
@@ -104,8 +105,9 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$v->check(array());
 	}
 
-	public function testDotNotationIsSubarrayTraversed() {
-		$v = new Validator('element.attrs.text');
+	public function testNmpsaceSeemsToWork() {
+		$v = new Validator('text');
+		$v->nmspace('element.attrs');
 		$input = array(
 			'element' => array(
 				'attrs' => array(
@@ -135,6 +137,17 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertThat($v->cleanedValue, $this->isType('array'));
 		$this->assertThat(array('attrs' => '1213'),
 			$this->identicalTo($v->cleanedValue));
+	}
+
+	/**
+	 * @expectedException ValidationError
+	 */
+	public function testRequiredContinuesWorkingWithNmspace() {
+		$v = new Validator('bar');
+		$v->nmspace('foo')
+			->required();
+		$input = array();
+		$v->check($input);
 	}
 }
 

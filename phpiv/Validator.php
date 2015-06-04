@@ -6,6 +6,7 @@ class Validator {
 	protected $apply;
 	protected $defaultInput = null;
 	protected $defaultUsed;
+	protected $nmspaceParts;
 	public $name;
 	public $codename;
 	public $isNull; // ture when the field is null;
@@ -19,6 +20,7 @@ class Validator {
 		$this->codename = $codename;
 		$this->v = array();
 		$this->apply = array();
+		$this->nmspaceParts = array();
 	}
 
 	/**
@@ -48,6 +50,24 @@ class Validator {
 		if($val != '' && !preg_match($this->v['match'], $val)) {
 			return 'No es válido';
 		}
+	}
+
+	/**
+	 * Tells this validator to search the input value under nested subarray(s).
+	 * Use dot notation to tell te validator where to find the expected avlue.
+	 * You can change the symbol used to chop apart the namespace by passing it
+	 * in the secod parameter.
+	 *
+	 * This method is chainable.
+	 *
+	 * @param $spec string The namespace spec to search the input value.
+	 * @param $symbol string The symbol to use as namespace separator. Notice
+	 * that you must pass a regular expresion here, since this method uses
+	 * preg_split() to process the given namespace.
+	 */
+	public function nmspace($spec, $symbol='/\./') {
+		$this->nmspaceParts = preg_split($symbol, $spec);
+		return $this;
 	}
 
 	/**
@@ -114,7 +134,8 @@ class Validator {
 	 * Get the value (or $default if not present) associated to $key in $array.
 	 */
 	public function arrGet($key, array $arr, $default=null) {
-		$map = preg_split('/\./', $this->codename);
+		$map = $this->nmspaceParts;
+		$map[] = $key;
 
 		$depth = count($map);
 		for($i = 0; $i < $depth; $i++) {
