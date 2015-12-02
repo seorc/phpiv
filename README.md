@@ -18,3 +18,11 @@ I plan to add some parctical examples to this docs in future commits.
 
 The desing of this validator imitates what other frameworks do. I created it to
 have a simple validation toolbelt for small projects and for fun.
+
+
+##Testing
+
+You will require PHPUnit to run the test. It is included in the `composer.json`
+as a developent dep. You can run the tests as follows:
+
+    ./vendor/bin/phpunit --bootstrap autoload.php  tests/
