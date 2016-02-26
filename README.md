@@ -25,4 +25,4 @@ have a simple validation toolbelt for small projects and for fun.
 You will require PHPUnit to run the test. It is included in the `composer.json`
 as a developent dep. You can run the tests as follows:
 
-    ./vendor/bin/phpunit --bootstrap autoload.php  tests/
+    ./vendor/bin/phpunit
