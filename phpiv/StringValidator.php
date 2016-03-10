@@ -49,6 +49,9 @@ class StringValidator extends Validator {
 		if(!is_null($max)) {
 			$this->maxLength($max);
 		}
+		else {
+			$this->maxLength($min);
+		}
 		return $this;
 	}
 
