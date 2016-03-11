@@ -5,11 +5,13 @@
     "description": "A simple PHP input validation toolset.",
     "licence": "MIT",
     "require-dev": {
-        "phpunit/phpunit": "^4.6"
     },
     "autoload": {
         "psr-4": {
             "Phpiv\\": "phpiv/"
         }
+    },
+    "require": {
+        "phpunit/phpunit": "^4.8"
     }
 }

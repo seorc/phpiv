@@ -26,7 +26,7 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 		$v = new NumberValidator('numval');
 		$v->min($m);
 		if($input < $m) {
-			$this->setExpectedException(ValidationError::class);
+			$this->setExpectedException('Phpiv\ValidationError');
 		}
 		$v->check(array('numval' => $input));
 	}
@@ -39,7 +39,7 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 		$v = new NumberValidator('numval');
 		$v->max($m);
 		if($input > $m) {
-			$this->setExpectedException(ValidationError::class);
+			$this->setExpectedException('Phpiv\ValidationError');
 		}
 		$v->check(array('numval' => $input));
 	}

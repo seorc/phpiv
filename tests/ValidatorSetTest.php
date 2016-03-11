@@ -12,8 +12,8 @@ class ValidatorSetTest extends PHPUnit_Framework_TestCase {
 			array('string', true),
 			array('date', true),
 			array('basic', true),
-			array(EmailValidator::class, true),
-			array(NumberValidator::class, true),
+			array('Phpiv\EmailValidator', true),
+			array('Phpiv\NumberValidator', true),
 			// Invalid names.
 			array('w', false),
 			array('dates', false),

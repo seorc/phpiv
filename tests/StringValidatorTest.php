@@ -6,11 +6,11 @@ use Phpiv\ValidationError;
 class StringValidatorTest extends PHPUnit_Framework_TestCase {
 
     public function fixedLenghtProvider() {
-		return [
-			['aaaa', true],
-			['bbb', false],
-			['ccccc', false],
-		];
+		return array(
+			array('aaaa', true),
+			array('bbb', false),
+			array('ccccc', false),
+		);
 	}
 
     /**
@@ -19,18 +19,18 @@ class StringValidatorTest extends PHPUnit_Framework_TestCase {
     public function testLengtSingleParamMeansFixedLenght($value, $valid) {
         $v = new StringValidator('tested');
         $v->length(4);
-        if(!$valid) $this->setExpectedException(ValidationError::class);
-        $v->check(['tested' => $value]);
+        if(!$valid) $this->setExpectedException('Phpiv\ValidationError');
+        $v->check(array('tested' => $value));
     }
 
 
     public function rangedLengthProvider() {
-        return [
-            ['1234', true],
-            ['123', false],
-            ['123456', true],
-            ['1234567', false],
-        ];
+        return array(
+            array('1234', true),
+            array('123', false),
+            array('123456', true),
+            array('1234567', false),
+        );
     }
 
     /**
@@ -39,7 +39,7 @@ class StringValidatorTest extends PHPUnit_Framework_TestCase {
     public function testLengthCanValidateRanges($value, $valid) {
         $v = new StringValidator('tested');
         $v->length(4, 6);
-        if(!$valid) $this->setExpectedException(ValidationError::class);
-        $v->check(['tested' => $value]);
+        if(!$valid) $this->setExpectedException('Phpiv\ValidationError');
+        $v->check(array('tested' => $value));
     }
 }

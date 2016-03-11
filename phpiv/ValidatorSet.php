@@ -8,12 +8,12 @@ class ValidatorSet {
 
 	protected $validators = array();
 	protected $types = array(
-		'basic' => Validator::class,
-		'string' => StringValidator::class,
-		'date' => DateValidator::class,
-		'email' => EmailValidator::class,
-		'number' => NumberValidator::class,
-		'bool' => BooleanValidator::class,
+		'basic' => 'Phpiv\Validator',
+		'string' => 'Phpiv\StringValidator',
+		'date' => 'Phpiv\DateValidator',
+		'email' => 'Phpiv\EmailValidator',
+		'number' => 'Phpiv\NumberValidator',
+		'bool' => 'Phpiv\BooleanValidator',
 	);
 
 	/**
@@ -30,7 +30,7 @@ class ValidatorSet {
 			return $v;
 		}
 		elseif(class_exists($type)) {
-			if(!is_subclass_of($type, Validator::class)) {
+			if(!is_subclass_of($type, 'Phpiv\Validator')) {
 				throw new InvalidArgumentException(
 					'The class must be a validator');
 			}

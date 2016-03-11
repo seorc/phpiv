@@ -21,7 +21,7 @@ class BooleanValidatorTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testErrorOnNotBooleanInput($notbool) {
 		$v = new BooleanValidator('boolvalue');
-		$this->setExpectedException(ValidationError::class);
+		$this->setExpectedException('Phpiv\ValidationError');
 		$v->check(array('boolvalue' => $notbool));
 	}
 

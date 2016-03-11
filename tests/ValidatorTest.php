@@ -75,7 +75,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 	public function testRequiredDetectsUniexistingKeyOnInput() {
 		$v = new Validator('in');
 		$v->required();
-		$this->setExpectedException(ValidationError::class);
+		$this->setExpectedException('Phpiv\ValidationError');
 		$v->check(array());
 	}
 
@@ -90,7 +90,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 	 public function testRequiredDoesNotColideWithDefaultInput() {
 		$v = new Validator('in');
 		$v->defaultInput(0)->required();
-		$this->setExpectedException(ValidationError::class);
+		$this->setExpectedException('Phpiv\ValidationError');
 		$v->check(array());
 	}
 
@@ -100,7 +100,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$v->check(array());
 		$this->assertEquals(0, $v->cleanedValue);
 
-		$this->setExpectedException(ValidationError::class);
+		$this->setExpectedException('Phpiv\ValidationError');
 		$v->required();
 		$v->check(array());
 	}
@@ -144,7 +144,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$v->nmspace('foo')
 			->required();
 		$input = array();
-		$this->setExpectedException(ValidationError::class);
+		$this->setExpectedException('Phpiv\ValidationError');
 		$v->check($input);
 	}
 }
