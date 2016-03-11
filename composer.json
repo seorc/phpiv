@@ -3,7 +3,7 @@
     "type": "library",
     "keywords": ["validation"],
     "description": "A simple PHP input validation toolset.",
-    "licence": "MIT",
+    "license": "MIT",
     "require-dev": {
     },
     "autoload": {
