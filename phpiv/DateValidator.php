@@ -1,5 +1,15 @@
 <?php
 
+namespace Phpiv;
+
+use DateTime;
+use InvalidArgumentException;
+
+/**
+ * Validator of dates.
+ *
+ * This validator expects an ISO formated date by default.
+ */
 class DateValidator extends Validator {
 
 	protected $formatUsed;
@@ -30,7 +40,7 @@ class DateValidator extends Validator {
 	/**
 	 * Validate a mimimum date.
 	 *
-	 * $date must be written in ISO format or a DateTime instance must be 
+	 * $date must be written in ISO format or a DateTime instance must be
 	 * passed.
 	 *
 	 * This method is chainable.
@@ -53,7 +63,7 @@ class DateValidator extends Validator {
 
 	/**
 	 * Validate maximum date.
-	 * $date must be written in ISO format or a DateTime instance must be 
+	 * $date must be written in ISO format or a DateTime instance must be
 	 * passed.
 	 *
 	 * This method is chainable.

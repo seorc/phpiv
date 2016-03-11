@@ -1,5 +1,9 @@
 <?php
 
+use InvalidArgumentException;
+use Phpiv\DateValidator;
+use Phpiv\ValidationError;
+
 class DateValidatorTest extends PHPUnit_Framework_TestCase {
 
 	public function testChainiableMethodsReturnThis() {

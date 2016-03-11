@@ -1,5 +1,9 @@
 <?php
 
+use Phpiv\ValidatorSet;
+use Phpiv\EmailValidator;
+use Phpiv\NumberValidator;
+
 class ValidatorSetTest extends PHPUnit_Framework_TestCase {
 
 	public function validatorClassNamesProvider() {
@@ -8,8 +12,8 @@ class ValidatorSetTest extends PHPUnit_Framework_TestCase {
 			array('string', true),
 			array('date', true),
 			array('basic', true),
-			array('EmailValidator', true),
-			array('NumberValidator', true),
+			array(EmailValidator::class, true),
+			array(NumberValidator::class, true),
 			// Invalid names.
 			array('w', false),
 			array('dates', false),

@@ -1,5 +1,8 @@
 <?php
 
+use Phpiv\BooleanValidator;
+use Phpiv\ValidationError;
+
 class BooleanValidatorTest extends PHPUnit_Framework_TestCase {
 
 	public function notBooleansProvider() {
@@ -15,10 +18,10 @@ class BooleanValidatorTest extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider notBooleansProvider
-	 * @expectedException ValidationError
 	 */
 	public function testErrorOnNotBooleanInput($notbool) {
 		$v = new BooleanValidator('boolvalue');
+		$this->setExpectedException(ValidationError::class);
 		$v->check(array('boolvalue' => $notbool));
 	}
 

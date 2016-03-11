@@ -1,5 +1,9 @@
 <?php
 
+namespace Phpiv;
+
+use InvalidArgumentException;
+
 class NumberValidator extends Validator {
 	public function baseCheck() {
 		$errors = array();
@@ -20,7 +24,7 @@ class NumberValidator extends Validator {
 		if(array_key_exists('max', $this->v) && $this->v['max'] < $min) {
 			throw new InvalidArgumentException('Min cannot be greater than max');
 		}
-		$this->v['min'] = $min;	
+		$this->v['min'] = $min;
 		return $this;
 	}
 
@@ -31,7 +35,7 @@ class NumberValidator extends Validator {
 		if(array_key_exists('min', $this->v) && $this->v['min'] > $max) {
 			throw new InvalidArgumentException('Max cannot be less than min');
 		}
-		$this->v['max'] = $max;	
+		$this->v['max'] = $max;
 		return $this;
 	}
 

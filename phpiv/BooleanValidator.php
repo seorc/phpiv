@@ -1,5 +1,7 @@
 <?php
 
+namespace Phpiv;
+
 class BooleanValidator extends Validator {
 
 	public function baseCheck() {

@@ -1,5 +1,8 @@
 <?php
 
+use Phpiv\Validator;
+use Phpiv\ValidationError;
+
 class ValidatorTest extends PHPUnit_Framework_TestCase {
 
 	public function testChainiableMethodsReturnThis() {
@@ -69,12 +72,10 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(6, $v->cleanedValue);
 	}
 
-	/**
-	 *  @expectedException ValidationError
-	 */
 	public function testRequiredDetectsUniexistingKeyOnInput() {
 		$v = new Validator('in');
 		$v->required();
+		$this->setExpectedException(ValidationError::class);
 		$v->check(array());
 	}
 
@@ -85,12 +86,11 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 	 * Validator tried to access an unexisting index in input data when both
 	 * filters where used, preventing this validator to perform a complete
 	 * validation.
-	 *
-	 * @expectedException ValidationError
 	 */
-	public function testRequiredDoesNotColideWithDefaultInput() {
+	 public function testRequiredDoesNotColideWithDefaultInput() {
 		$v = new Validator('in');
 		$v->defaultInput(0)->required();
+		$this->setExpectedException(ValidationError::class);
 		$v->check(array());
 	}
 
@@ -100,7 +100,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$v->check(array());
 		$this->assertEquals(0, $v->cleanedValue);
 
-		$this->setExpectedException('ValidationError');
+		$this->setExpectedException(ValidationError::class);
 		$v->required();
 		$v->check(array());
 	}
@@ -139,16 +139,12 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 			$this->identicalTo($v->cleanedValue));
 	}
 
-	/**
-	 * @expectedException ValidationError
-	 */
 	public function testRequiredContinuesWorkingWithNmspace() {
 		$v = new Validator('bar');
 		$v->nmspace('foo')
 			->required();
 		$input = array();
+		$this->setExpectedException(ValidationError::class);
 		$v->check($input);
 	}
 }
-
-?>

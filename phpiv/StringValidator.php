@@ -1,9 +1,9 @@
 <?php
 
+namespace Phpiv;
+
 /**
- * Validator of dates.
- *
- * This validator expects an ISO formated date by default.
+ * Validator of strings.
  */
 class StringValidator extends Validator {
 
@@ -78,5 +78,3 @@ class StringValidator extends Validator {
 		}
 	}
 }
-
-?>

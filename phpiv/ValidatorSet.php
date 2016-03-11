@@ -1,15 +1,19 @@
 <?php
 
+namespace Phpiv;
+
+use InvalidArgumentException;
+
 class ValidatorSet {
 
 	protected $validators = array();
 	protected $types = array(
-		'basic' => 'Validator',
-		'string' => 'StringValidator',
-		'date' => 'DateValidator',
-		'email' => 'EmailValidator',
-		'number' => 'NumberValidator',
-		'bool' => 'BooleanValidator',
+		'basic' => Validator::class,
+		'string' => StringValidator::class,
+		'date' => DateValidator::class,
+		'email' => EmailValidator::class,
+		'number' => NumberValidator::class,
+		'bool' => BooleanValidator::class,
 	);
 
 	/**
@@ -26,7 +30,7 @@ class ValidatorSet {
 			return $v;
 		}
 		elseif(class_exists($type)) {
-			if(!is_subclass_of($type, 'Validator')) {
+			if(!is_subclass_of($type, Validator::class)) {
 				throw new InvalidArgumentException(
 					'The class must be a validator');
 			}
@@ -63,7 +67,7 @@ class ValidatorSet {
 	}
 
 	/**
-	 * Obtain an array with the cleaned value of each Validator this set 
+	 * Obtain an array with the cleaned value of each Validator this set
 	 * contains.
 	 */
 	public function getCleaned() {
@@ -74,5 +78,3 @@ class ValidatorSet {
 		return $cleaned;
 	}
 }
-
-?>

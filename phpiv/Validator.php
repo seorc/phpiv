@@ -1,5 +1,9 @@
 <?php
 
+namespace Phpiv;
+
+use InvalidArgumentException;
+
 class Validator {
 
 	protected $v;

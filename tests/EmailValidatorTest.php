@@ -1,5 +1,8 @@
 <?php
 
+use Phpiv\EmailValidator;
+use Phpiv\ValidationError;
+
 class EmailValidatorTest extends PHPUnit_Framework_TestCase {
 
 	public function testChainableMethosAreDoingWell() {
@@ -31,7 +34,7 @@ class EmailValidatorTest extends PHPUnit_Framework_TestCase {
 	 * @dataProvider invalidEmailProvider
 	 */
 	public function testInvalidIsDetected($email, $valid) {
-		$v = new EmailValidator('email');	
+		$v = new EmailValidator('email');
 		try{
 			$v->check(array('email' => $email));
 			$errors = array();

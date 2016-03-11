@@ -1,5 +1,8 @@
 <?php
 
+use Phpiv\StringValidator;
+use Phpiv\ValidationError;
+
 class StringValidatorTest extends PHPUnit_Framework_TestCase {
 
     public function fixedLenghtProvider() {
@@ -16,7 +19,7 @@ class StringValidatorTest extends PHPUnit_Framework_TestCase {
     public function testLengtSingleParamMeansFixedLenght($value, $valid) {
         $v = new StringValidator('tested');
         $v->length(4);
-        if(!$valid) $this->setExpectedException('ValidationError');
+        if(!$valid) $this->setExpectedException(ValidationError::class);
         $v->check(['tested' => $value]);
     }
 
@@ -36,7 +39,7 @@ class StringValidatorTest extends PHPUnit_Framework_TestCase {
     public function testLengthCanValidateRanges($value, $valid) {
         $v = new StringValidator('tested');
         $v->length(4, 6);
-        if(!$valid) $this->setExpectedException('ValidationError');
+        if(!$valid) $this->setExpectedException(ValidationError::class);
         $v->check(['tested' => $value]);
     }
 }

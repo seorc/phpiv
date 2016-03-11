@@ -1,5 +1,8 @@
 <?php
 
+use Phpiv\NumberValidator;
+use Phpiv\ValidationError;
+
 class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 
 	public function testChainableMethodsIndeedChain() {
@@ -23,7 +26,7 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 		$v = new NumberValidator('numval');
 		$v->min($m);
 		if($input < $m) {
-			$this->setExpectedException('ValidationError');
+			$this->setExpectedException(ValidationError::class);
 		}
 		$v->check(array('numval' => $input));
 	}
@@ -36,7 +39,7 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 		$v = new NumberValidator('numval');
 		$v->max($m);
 		if($input > $m) {
-			$this->setExpectedException('ValidationError');
+			$this->setExpectedException(ValidationError::class);
 		}
 		$v->check(array('numval' => $input));
 	}
