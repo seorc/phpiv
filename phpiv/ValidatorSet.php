@@ -20,7 +20,7 @@ class ValidatorSet {
 	 * Add a validator to this set.
 	 *
 	 * You must pass either a Validator class name or an alias according by
-	 * this class' $tyes attribute.
+	 * this class' $types attribute.
 	 */
 	public function add($type, $codename, $name='') {
 		if(is_string($type) && array_key_exists($type, $this->types)) {

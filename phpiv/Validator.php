@@ -6,15 +6,15 @@ use InvalidArgumentException;
 
 class Validator {
 
-	protected $v;
+	protected $v; // Store in this array any validator params.
 	protected $apply;
 	protected $defaultInput = null;
 	protected $defaultUsed;
 	protected $nmspaceParts;
 	public $name;
 	public $codename;
-	public $isNull; // ture when the field is null;
-	public $isBlank; // true when the field is blank;
+	public $isNull; // ture when the field is null.
+	public $isBlank; // true when the field is blank.
 	public $isEmpty; // Implies null or blank.
 	public $value;
 	public $cleanedValue = null;
