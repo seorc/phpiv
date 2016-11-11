@@ -58,4 +58,21 @@ class FileValidator extends Validator {
         return new \finfo(FILEINFO_MIME_TYPE);
     }
 
+    public function baseCheck() {
+        $errors = parent::baseCheck();
+        switch ($this->value['error']) {
+            case UPLOAD_ERR_OK:
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                $errors[] = 'No se envió el archivo';
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                $errors[] = 'El archivo es muy grande';
+            default:
+                $errors[] = 'Error desconocido';
+        }
+
+        return $errors;
+    }
+
 }

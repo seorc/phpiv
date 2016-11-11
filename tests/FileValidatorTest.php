@@ -17,6 +17,13 @@ class FileValidatorTest extends PHPUnit_Framework_TestCase {
                 'tmp_name' => '/tmp/file',
                 'error' => UPLOAD_ERR_OK,
             ),
+            'nofphoto' => array(
+                'name' => 'myphoto.jpg',
+                'type' => 'image/jpg',
+                'size' => 2048,
+                'tmp_name' => '/tmp/file',
+                'error' => UPLOAD_ERR_NO_FILE,
+            ),
         );
     }
 
@@ -57,6 +64,28 @@ class FileValidatorTest extends PHPUnit_Framework_TestCase {
         // Wil throw.
         $this->setExpectedException('Phpiv\ValidationError');
         $v->check($this->files);
+    }
 
+    public function uploadErrorProvider() {
+        return array(
+            array(UPLOAD_ERR_OK, false), // No error.
+            array(UPLOAD_ERR_NO_FILE, true),
+            array(UPLOAD_ERR_INI_SIZE, true),
+            array(UPLOAD_ERR_FORM_SIZE, true),
+            array(2587845, true),
+        );
+    }
+
+    /**
+     * @dataProvider uploadErrorProvider
+     */
+    public function testBaseCheckIsPerformed($errCode, $mustFail) {
+        if($mustFail) {
+            $this->setExpectedException('Phpiv\ValidationError');
+        }
+
+        $v = new FileValidator('photo');
+        $this->files['photo']['error'] = $errCode;
+        $v->check($this->files);
     }
 }
