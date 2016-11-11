@@ -5,14 +5,18 @@ namespace Phpiv;
 use InvalidArgumentException;
 
 /**
- * Work on an array of data structured according to PHP's $_FILE superglobal,
+ * Work on an array of data structured according to PHP's $_FILES superglobal,
  * it is to say an array containing an entry for each file uploaded. Each entry
  * contains in turn a nested array with the properties of the file it
- * represents.
+ * represents. This validator works on a single entry of $_FILES.
  *
  * @see http://php.net/manual/en/features.file-upload.post-method.php
  */
 class FileValidator extends Validator {
+
+    public function clean() {
+        return new UploadedFile($this->value);
+    }
 
     /**
      * Specify a maximum size for the file in kB.
@@ -28,13 +32,15 @@ class FileValidator extends Validator {
 
     protected function maxCheck(array $data) {
         $max = $this->v['max'];
-        if(!$this->isEmpty && $this->value['size'] / 1024 > $max) {
+        if(!$this->isEmpty && $this->cleanedValue->largerThan($max)) {
             return "El archivo no debe pesar más de $max kB";
         }
     }
 
     /**
      * Which content types must be validated.
+     *
+     * This validator appends the contentType and the
      */
     public function contentType(array $types) {
         $this->v['contentType'] = $types;
@@ -43,9 +49,8 @@ class FileValidator extends Validator {
 
     protected function contentTypeCheck(array $data) {
         if(!$this->isEmpty) {
-            $finfo = $this->buildFinfo();
             $ext = array_search(
-                $finfo->file($this->value['tmp_name']),
+                $this->cleanedValue->getContentType(),
                 $this->v['contentType'],
                 true);
             if(false === $ext) {
@@ -54,13 +59,9 @@ class FileValidator extends Validator {
         }
     }
 
-    protected function buildFinfo() {
-        return new \finfo(FILEINFO_MIME_TYPE);
-    }
-
     public function baseCheck() {
         $errors = parent::baseCheck();
-        switch ($this->value['error']) {
+        switch ($this->cleanedValue->getError()) {
             case UPLOAD_ERR_OK:
                 break;
             case UPLOAD_ERR_NO_FILE:

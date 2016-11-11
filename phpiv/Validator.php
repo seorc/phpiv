@@ -118,8 +118,10 @@ class Validator {
 			&& !is_array($this->value)
 			&& strlen($this->value) === 0;
 		$this->isEmpty = $this->isNull || $this->isBlank;
-		$this->cleanedValue = $this->clean();
-		$this->applyApply();
+        $this->cleanedValue = $this->clean();
+        $this->applyApply();
+
+        // Perform the validations on the input.
 		$errors = $this->baseCheck();
 		foreach($this->v as $k => $v) {
 			$method = $k."Check";

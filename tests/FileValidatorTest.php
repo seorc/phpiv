@@ -1,6 +1,7 @@
 <?php
 
 use Phpiv\FileValidator;
+use Phpiv\UploadedFile;
 use Phpiv\ValidationError;
 
 class FileValidatorTest extends PHPUnit_Framework_TestCase {
@@ -40,19 +41,20 @@ class FileValidatorTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testContentTypeIsChecked() {
-        $finfoMock = $this->getMockBuilder('\finfo')
-            ->setMethods(['file'])
+        $ufMock = $this->getMockBuilder('Phpiv\UploadedFile')
+            ->disableOriginalConstructor()
+            ->setMethods(['getContentType'])
             ->getMock();
 
-        $finfoMock->expects($this->exactly(2))
-            ->method('file')
+        $ufMock->expects($this->exactly(2))
+            ->method('getContentType')
             ->will($this->onConsecutiveCalls('image/gif', 'image/jpg'));
 
         $v = $this->getMockBuilder('Phpiv\FileValidator')
             ->setConstructorArgs(['photo'])
-            ->setMethods(['buildFinfo'])
+            ->setMethods(['clean'])
             ->getMock();
-        $v->method('buildFinfo')->willReturn($finfoMock);
+        $v->method('clean')->willReturn($ufMock);
         $v->contentType(array(
             'gif' => 'image/gif',
             'png' => 'image/png',
