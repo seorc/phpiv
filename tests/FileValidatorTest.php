@@ -3,13 +3,14 @@
 use Phpiv\FileValidator;
 use Phpiv\UploadedFile;
 use Phpiv\ValidationError;
+use PHPUnit\Framework\TestCase;
 
-class FileValidatorTest extends PHPUnit_Framework_TestCase {
+class FileValidatorTest extends TestCase {
 
 
     protected $files;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->files = array(
             'photo' => array(
                 'name' => 'myphoto.jpg',
@@ -34,7 +35,7 @@ class FileValidatorTest extends PHPUnit_Framework_TestCase {
         $v->max(2);
         $v->check($this->files);
 
-        $this->setExpectedException('Phpiv\ValidationError');
+        $this->expectException('Phpiv\ValidationError');
         $v->max(1);
         $v->check($this->files);
 
@@ -64,7 +65,7 @@ class FileValidatorTest extends PHPUnit_Framework_TestCase {
         $v->check($this->files);
 
         // Wil throw.
-        $this->setExpectedException('Phpiv\ValidationError');
+        $this->expectException('Phpiv\ValidationError');
         $v->check($this->files);
     }
 
@@ -83,11 +84,12 @@ class FileValidatorTest extends PHPUnit_Framework_TestCase {
      */
     public function testBaseCheckIsPerformed($errCode, $mustFail) {
         if($mustFail) {
-            $this->setExpectedException('Phpiv\ValidationError');
+            $this->expectException('Phpiv\ValidationError');
         }
 
         $v = new FileValidator('photo');
         $this->files['photo']['error'] = $errCode;
         $v->check($this->files);
+        $this->addToAssertionCount(1);
     }
 }

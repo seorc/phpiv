@@ -2,8 +2,9 @@
 
 use Phpiv\BooleanValidator;
 use Phpiv\ValidationError;
+use PHPUnit\Framework\TestCase;
 
-class BooleanValidatorTest extends PHPUnit_Framework_TestCase {
+class BooleanValidatorTest extends TestCase {
 
 	public function notBooleansProvider() {
 		return array(
@@ -21,7 +22,7 @@ class BooleanValidatorTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testErrorOnNotBooleanInput($notbool) {
 		$v = new BooleanValidator('boolvalue');
-		$this->setExpectedException('Phpiv\ValidationError');
+		$this->expectException('Phpiv\ValidationError');
 		$v->check(array('boolvalue' => $notbool));
 	}
 

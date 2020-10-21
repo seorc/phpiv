@@ -3,8 +3,9 @@
 use Phpiv\ValidatorSet;
 use Phpiv\EmailValidator;
 use Phpiv\NumberValidator;
+use PHPUnit\Framework\TestCase;
 
-class ValidatorSetTest extends PHPUnit_Framework_TestCase {
+class ValidatorSetTest extends TestCase {
 
 	public function validatorClassNamesProvider() {
 		return array(
@@ -26,10 +27,11 @@ class ValidatorSetTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testInvalidValidatorTypeIsDetected($name, $validName) {
 		if(!$validName) {
-			$this->setExpectedException('InvalidArgumentException');
+			$this->expectException('InvalidArgumentException');
 		};
 		$vs = new ValidatorSet();
 		$vs->add($name, 'inputname');
+		$this->addToAssertionCount(1);
 	}
 
 	public function testGetCleanedReturnsKeyValueData() {

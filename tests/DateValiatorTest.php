@@ -3,8 +3,9 @@
 use InvalidArgumentException;
 use Phpiv\DateValidator;
 use Phpiv\ValidationError;
+use PHPUnit\Framework\TestCase;
 
-class DateValidatorTest extends PHPUnit_Framework_TestCase {
+class DateValidatorTest extends TestCase {
 
 	public function testChainiableMethodsReturnThis() {
 		$v = new DateValidator('date');
@@ -14,18 +15,14 @@ class DateValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($v->between('2000-01-01', '2000-01-02'), $v);
 	}
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testThrowsInvalidOnMinAfterMax() {
+		$this->expectException(\InvalidArgumentException::class);
 		$v = new DateValidator('date');
 		$v->min('2000-01-02')->max('2000-01-01');
 	}
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testThrowsInvalidOnMaxBeforeMin() {
+		$this->expectException(\InvalidArgumentException::class);
 		$v = new DateValidator('date');
 		$v->max('2000-01-01')->min('2000-01-02');
 	}

@@ -2,8 +2,9 @@
 
 use Phpiv\StringValidator;
 use Phpiv\ValidationError;
+use PHPUnit\Framework\TestCase;
 
-class StringValidatorTest extends PHPUnit_Framework_TestCase {
+class StringValidatorTest extends TestCase {
 
     public function fixedLenghtProvider() {
 		return array(
@@ -19,8 +20,9 @@ class StringValidatorTest extends PHPUnit_Framework_TestCase {
     public function testLengtSingleParamMeansFixedLenght($value, $valid) {
         $v = new StringValidator('tested');
         $v->length(4);
-        if(!$valid) $this->setExpectedException('Phpiv\ValidationError');
+        if(!$valid) $this->expectException('Phpiv\ValidationError');
         $v->check(array('tested' => $value));
+        $this->addToAssertionCount(1);
     }
 
 
@@ -39,7 +41,8 @@ class StringValidatorTest extends PHPUnit_Framework_TestCase {
     public function testLengthCanValidateRanges($value, $valid) {
         $v = new StringValidator('tested');
         $v->length(4, 6);
-        if(!$valid) $this->setExpectedException('Phpiv\ValidationError');
+        if(!$valid) $this->expectException('Phpiv\ValidationError');
         $v->check(array('tested' => $value));
+        $this->addToAssertionCount(1);
     }
 }

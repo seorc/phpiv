@@ -2,15 +2,17 @@
 
 use Phpiv\EmailValidator;
 use Phpiv\ValidationError;
+use PHPUnit\Framework\TestCase;
 
-class EmailValidatorTest extends PHPUnit_Framework_TestCase {
+class EmailValidatorTest extends TestCase {
 
 	public function testChainableMethosAreDoingWell() {
 		$v = new EmailValidator('email');
+		$this->assertSame($v, $v->required());
 	}
 
 
-	public function invalidEmailProvider() {
+	public function emailsProvidaer() {
 		return array(
 			// Invalid inputs.
 			array('uno', false),
@@ -25,13 +27,8 @@ class EmailValidatorTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function validEmailProvider() {
-		return array(
-		);
-	}
-
 	/**
-	 * @dataProvider invalidEmailProvider
+	 * @dataProvider emailsProvidaer
 	 */
 	public function testInvalidIsDetected($email, $valid) {
 		$v = new EmailValidator('email');

@@ -2,8 +2,9 @@
 
 use Phpiv\NumberValidator;
 use Phpiv\ValidationError;
+use PHPUnit\Framework\TestCase;
 
-class NumberValidatorTest extends PHPUnit_Framework_TestCase {
+class NumberValidatorTest extends TestCase {
 
 	public function testChainableMethodsIndeedChain() {
 		$v = new NumberValidator('numval');
@@ -26,9 +27,10 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 		$v = new NumberValidator('numval');
 		$v->min($m);
 		if($input < $m) {
-			$this->setExpectedException('Phpiv\ValidationError');
+			$this->expectException('Phpiv\ValidationError');
 		}
 		$v->check(array('numval' => $input));
+		$this->addToAssertionCount(1);
 	}
 
 	/**
@@ -39,9 +41,10 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 		$v = new NumberValidator('numval');
 		$v->max($m);
 		if($input > $m) {
-			$this->setExpectedException('Phpiv\ValidationError');
+			$this->expectException('Phpiv\ValidationError');
 		}
 		$v->check(array('numval' => $input));
+		$this->addToAssertionCount(1);
 	}
 
 	public function invalidMinMaxProvider() {
@@ -79,9 +82,10 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 	public function testExceptionOnWrongMin($min, $valid) {
 		$v = new NumberValidator('val');
 		if(!$valid) {
-			$this->setExpectedException('InvalidArgumentException');
+			$this->expectException('InvalidArgumentException');
 		}
 		$v->max($min);
+		$this->addToAssertionCount(1);
 	}
 
 	/**
@@ -90,23 +94,20 @@ class NumberValidatorTest extends PHPUnit_Framework_TestCase {
 	public function testExceptionOnWrongMax($max, $valid) {
 		$v = new NumberValidator('val');
 		if(!$valid) {
-			$this->setExpectedException('InvalidArgumentException');
+			$this->expectException('InvalidArgumentException');
 		}
 		$v->max($max);
+		$this->addToAssertionCount(1);
 	}
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testMaxCannotBeLessThanMin() {
+		$this->expectException(\InvalidArgumentException::class);
 		$v = new NumberValidator('val');
 		$v->min(4)->max(3);
 	}
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testMinCannotBeGreaterThanMax() {
+		$this->expectException(\InvalidArgumentException::class);
 		$v = new NumberValidator('val');
 		$v->max(4)->min(5);
 	}

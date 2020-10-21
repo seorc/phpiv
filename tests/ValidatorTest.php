@@ -2,8 +2,9 @@
 
 use Phpiv\Validator;
 use Phpiv\ValidationError;
+use PHPUnit\Framework\TestCase;
 
-class ValidatorTest extends PHPUnit_Framework_TestCase {
+class ValidatorTest extends TestCase {
 
 	public function testChainiableMethodsReturnThis() {
 		$v = new Validator('testval');
@@ -55,10 +56,8 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(' JOSIJF OOOO', $v->cleanedValue);
 	}
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
 	public function testApplayThrowsExceptionOnUnexistentFunction() {
+		$this->expectException(\InvalidArgumentException::class);
 		$v = new Validator('afield');
 		$v->apply('thisfunctshouldnotexistttt', array());
 	}
@@ -75,7 +74,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 	public function testRequiredDetectsUniexistingKeyOnInput() {
 		$v = new Validator('in');
 		$v->required();
-		$this->setExpectedException('Phpiv\ValidationError');
+		$this->expectException('Phpiv\ValidationError');
 		$v->check(array());
 	}
 
@@ -90,7 +89,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 	 public function testRequiredDoesNotColideWithDefaultInput() {
 		$v = new Validator('in');
 		$v->defaultInput(0)->required();
-		$this->setExpectedException('Phpiv\ValidationError');
+		$this->expectException('Phpiv\ValidationError');
 		$v->check(array());
 	}
 
@@ -100,7 +99,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$v->check(array());
 		$this->assertEquals(0, $v->cleanedValue);
 
-		$this->setExpectedException('Phpiv\ValidationError');
+		$this->expectException('Phpiv\ValidationError');
 		$v->required();
 		$v->check(array());
 	}
@@ -144,7 +143,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$v->nmspace('foo')
 			->required();
 		$input = array();
-		$this->setExpectedException('Phpiv\ValidationError');
+		$this->expectException('Phpiv\ValidationError');
 		$v->check($input);
 	}
 }
